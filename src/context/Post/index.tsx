@@ -11,9 +11,9 @@ interface Post {
 interface PostContextProps {
   posts: Post[];
   fetchPosts: () => void;
-  createPost: (post: Post) => void;
-  updatePost: (id: string, post: Post) => void;
-  deletePost: (id: string) => void;
+  createPost: (post: Post) => Promise<void>;
+  updatePost: (id: string, post: Post) => Promise<void>;
+  deletePost: (id: string) => Promise<void>;
 }
 
 const PostContext = createContext<PostContextProps>({} as PostContextProps);
@@ -22,23 +22,23 @@ export const PostProvider = ({ children }: { children: ReactNode }) => {
   const [posts, setPosts] = useState<Post[]>([]);
 
   const fetchPosts = async () => {
-    const response = await api.get('/posts');
+    const response = await api.get('/api/posts');
     setPosts(response.data);
   };
 
   const createPost = async (post: Post) => {
-    const response = await api.post('/posts', post);
+    const response = await api.post('/api/posts', post);
     setPosts([...posts, response.data]);
   };
 
-  const updatePost = async (id: string, post: Post) => {
-    const response = await api.put(`/posts/${id}`, post);
-    setPosts(posts.map((p) => (p._id === id ? response.data : p)));
+  const updatePost = async (id: string, updatedPost: Post) => {
+    const response = await api.put(`/api/posts/${id}`, updatedPost);
+    setPosts(posts.map((post) => (post._id === id ? response.data : post)));
   };
 
   const deletePost = async (id: string) => {
-    await api.delete(`/posts/${id}`);
-    setPosts(posts.filter((p) => p._id !== id));
+    await api.delete(`/api/posts/${id}`);
+    setPosts(posts.filter((post) => post._id !== id));
   };
 
   useEffect(() => {

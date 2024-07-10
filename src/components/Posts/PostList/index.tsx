@@ -8,9 +8,8 @@ const PostList = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { user } = useUser();
+  console.log(user)
 
-  console.log(user?.name)
-  const id = user?._id
 
   const handleEdit = (id: string) => {
     navigate(`/edit/${id}`);

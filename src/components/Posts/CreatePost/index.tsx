@@ -6,39 +6,41 @@ import { usePosts } from '../../../context/Post';
 const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const { isAuthenticated } = useAuth();
   const { createPost } = usePosts();
   const navigate = useNavigate();
-
-  if (!isAuthenticated) {
-    navigate('/login');
-  }
+  const { user } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createPost({ title, content, author: 'Current User', _id: '' });
-    navigate('/');
+    if (user?.id) {
+      await createPost({ title, content, author: user.id, _id: '' });
+      navigate('/');
+    } else {
+      console.error('User is not authenticated');
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto p-4 shadow-md rounded-md bg-white">
-      <h2 className="text-2xl font-bold mb-4">Create Post</h2>
-      <input 
-        type="text" 
-        value={title} 
-        onChange={(e) => setTitle(e.target.value)} 
-        placeholder="Title" 
-        required 
-        className="w-full p-2 mb-4 border rounded"
+    <form onSubmit={handleSubmit} className='max-w-md mx-auto p-4 shadow-md rounded-md bg-white'>
+      <h2 className='text-2xl font-bold mb-4'>Create Post</h2>
+      <input
+        type='text'
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder='Title'
+        required
+        className='w-full p-2 mb-4 border rounded'
       />
-      <textarea 
-        value={content} 
-        onChange={(e) => setContent(e.target.value)} 
-        placeholder="Content" 
-        required 
-        className="w-full p-2 mb-4 border rounded"
+      <textarea
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        placeholder='Content'
+        required
+        className='w-full p-2 mb-4 border rounded'
       />
-      <button type="submit" className="w-full p-2 bg-purple-500 text-white rounded">Create Post</button>
+      <button type='submit' className='w-full p-2 bg-purple-500 text-white rounded'>
+        Create Post
+      </button>
     </form>
   );
 };

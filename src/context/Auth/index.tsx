@@ -1,8 +1,15 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { login, register } from '../../services/auth';
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
 interface AuthContextProps {
   isAuthenticated: boolean;
+  user: User | null;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
@@ -24,23 +31,27 @@ const clearAuthData = () => {
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
   const handleLogin = async (email: string, password: string) => {
     const response = await login(email, password);
     setAuthData(response.token);
+    setUser(response.user);
     setIsAuthenticated(true);
   };
 
   const handleRegister = async (name: string, email: string, password: string) => {
     const response = await register(name, email, password);
     setAuthData(response.token);
+    setUser(response.user);
     setIsAuthenticated(true);
   };
 
   const handleLogout = () => {
     clearAuthData();
     setIsAuthenticated(false);
+    setUser(null);
   };
 
   useEffect(() => {
@@ -48,13 +59,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const expiry = localStorage.getItem('expiry');
     if (token && expiry && Date.now() < parseInt(expiry)) {
       setIsAuthenticated(true);
-    } else {
-      clearAuthData();
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login: handleLogin, register: handleRegister, logout: handleLogout }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, login: handleLogin, register: handleRegister, logout: handleLogout }}>
       {children}
     </AuthContext.Provider>
   );
