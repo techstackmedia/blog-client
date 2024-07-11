@@ -54,11 +54,12 @@ const EditPost = () => {
 
   return (
     <div className='container mx-auto p-4'>
-      <h1 className='text-3xl font-bold mb-4'>Edit Post</h1>
+      <h1 className='text-3xl font-bold mb-4'>Edit Existing Post</h1>
       <form
         onSubmit={handleSubmit}
-        className='max-w-xl mx-auto border p-4 shadow-md rounded-md bg-white'
+        className='mx-auto border p-4 shadow-md rounded-md bg-white'
       >
+        {/* <h2 className='text-2xl font-bold mb-4'>Edit</h2> */}
         {isPreview ? null : (
           <input
             type='text'

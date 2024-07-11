@@ -38,54 +38,57 @@ const CreatePost = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className='max-w-xl mx-auto p-4 shadow-md rounded-md bg-white'
-    >
-      <h2 className='text-2xl font-bold mb-4'>Create Post</h2>
-      {isPreview ? null : (
-        <input
-          type='text'
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder='Title'
-          required
-          className='w-full p-2 mb-4 border rounded outline-none'
-        />
-      )}
-      {isPreview ? (
-        <div className='min-h-96 flex flex-col justify-between'>
-          <div>
-            <h1 className='text-3xl font-bold mb-4'>{title}</h1>
-            <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>
+    <div className='container mx-auto p-4'>
+      <h1 className='text-3xl font-bold mb-4'>Create a New Post</h1>
+      <form
+        onSubmit={handleSubmit}
+        className='mx-auto p-4 shadow-md rounded-md bg-white border'
+      >
+        {/* <h2 className='text-2xl font-bold mb-4'>Create</h2> */}
+        {isPreview ? null : (
+          <input
+            type='text'
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder='Title'
+            required
+            className='w-full p-2 mb-4 border rounded outline-none'
+          />
+        )}
+        {isPreview ? (
+          <div className='min-h-96 flex flex-col justify-between'>
+            <div>
+              <h1 className='text-3xl font-bold mb-4'>{title}</h1>
+              <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>
+            </div>
+            <p className='text-gray-600 my-5'>Author: {name}</p>
           </div>
-          <p className='text-gray-600 my-5'>Author: {name}</p>
+        ) : (
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder='Content'
+            required
+            className='w-full p-2 mb-4 border rounded min-h-96 resize-none outline-none'
+          />
+        )}
+        <div className='flex gap-4'>
+          <button
+            type='submit'
+            className='w-full p-2 bg-blue-500 text-white rounded'
+          >
+            Create Post
+          </button>
+          <button
+            type='button'
+            className='w-full p-2 bg-blue-500 text-white rounded'
+            onClick={handlePreviewMode}
+          >
+            {isPreview ? 'Edit' : 'Preview'}
+          </button>
         </div>
-      ) : (
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder='Content'
-          required
-          className='w-full p-2 mb-4 border rounded min-h-96 resize-none outline-none'
-        />
-      )}
-      <div className='flex gap-4'>
-        <button
-          type='submit'
-          className='w-full p-2 bg-purple-500 text-white rounded outline-none'
-        >
-          Create Post
-        </button>
-        <button
-          type='button'
-          className='w-full p-2 bg-blue-500 text-white rounded'
-          onClick={handlePreviewMode}
-        >
-          {isPreview ? 'Edit' : 'Preview'}
-        </button>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 
