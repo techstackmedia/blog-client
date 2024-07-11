@@ -50,7 +50,7 @@ const CreatePost = () => {
           onChange={(e) => setTitle(e.target.value)}
           placeholder='Title'
           required
-          className='w-full p-2 mb-4 border rounded'
+          className='w-full p-2 mb-4 border rounded outline-none'
         />
       )}
       {isPreview ? (
@@ -67,13 +67,13 @@ const CreatePost = () => {
           onChange={(e) => setContent(e.target.value)}
           placeholder='Content'
           required
-          className='w-full p-2 mb-4 border rounded min-h-96 resize-none'
+          className='w-full p-2 mb-4 border rounded min-h-96 resize-none outline-none'
         />
       )}
       <div className='flex gap-4'>
         <button
           type='submit'
-          className='w-full p-2 bg-purple-500 text-white rounded'
+          className='w-full p-2 bg-purple-500 text-white rounded outline-none'
         >
           Create Post
         </button>
