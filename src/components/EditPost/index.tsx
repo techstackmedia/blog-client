@@ -31,7 +31,7 @@ const EditPost = () => {
     if (isPreview) {
       setIsPreview(false);
     } else {
-      setIsPreview(true)
+      setIsPreview(true);
     }
   };
 
@@ -71,7 +71,9 @@ const EditPost = () => {
         )}
         {isPreview ? (
           <div className='min-h-28'>
+            <h1 className='text-3xl font-bold mb-4'>{title}</h1>
             <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>
+            <p className='text-gray-600 my-5'>Author: {author}</p>
           </div>
         ) : (
           <textarea
@@ -86,11 +88,12 @@ const EditPost = () => {
         {isPreview ? null : (
           <input
             type='text'
+            readOnly
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
             placeholder='Author'
             required
-            className='w-full p-2 mb-4 border rounded'
+            className='w-full p-2 mb-4 border rounded outline-none'
           />
         )}
         <div className='flex gap-4'>
