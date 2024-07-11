@@ -15,13 +15,13 @@ const Login = () => {
   };
 
   return (
-    <div className='container mx-auto p-4'>
-      <h1 className='text-2xl font-bold mb-4'>Login as an Existing User</h1>
+    <div className='container mx-auto p-4 mt-6'>
+      {/* <h1 className='text-2xl font-bold mb-4'>Login as an Existing User</h1> */}
       <form
         onSubmit={handleSubmit}
-        className='mx-auto p-4 shadow-md rounded-md bg-white'
+        className='max-w-md mx-auto p-4 shadow-md border rounded-md bg-white'
       >
-        {/* <h2 className='text-2xl font-bold mb-4'>Login</h2> */}
+        <h2 className='text-2xl font-bold mb-4'>Login</h2>
         <input
           type='email'
           value={email}
