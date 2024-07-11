@@ -34,7 +34,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await api.get<User>('/users/me');
+        const response = await api.get<User>(`/api/users/me`);
         setUser(response.data);
       } catch (error) {
         console.error('Failed to fetch user:', error);

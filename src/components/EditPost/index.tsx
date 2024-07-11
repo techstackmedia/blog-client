@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePosts } from '../../context/Post';
 import { useAuth } from '../../context/Auth';
+import { useUser } from '../../context/User';
 
 const EditPost = () => {
   const { id } = useParams<{ id: string }>();
   const { posts, updatePost } = usePosts();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const { user } = useUser();
+  console.log(user);
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
