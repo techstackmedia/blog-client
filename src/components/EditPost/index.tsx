@@ -57,7 +57,7 @@ const EditPost = () => {
       <h1 className='text-3xl font-bold mb-4'>Edit Post</h1>
       <form
         onSubmit={handleSubmit}
-        className='max-w-md mx-auto p-4 shadow-md rounded-md bg-white'
+        className='max-w-xl mx-auto border p-4 shadow-md rounded-md bg-white'
       >
         {isPreview ? null : (
           <input
@@ -66,13 +66,15 @@ const EditPost = () => {
             onChange={(e) => setTitle(e.target.value)}
             placeholder='Title'
             required
-            className='w-full p-2 mb-4 border rounded'
+            className='w-full p-2 mb-4 border rounded outline-none'
           />
         )}
         {isPreview ? (
-          <div className='min-h-28'>
-            <h1 className='text-3xl font-bold mb-4'>{title}</h1>
-            <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>
+          <div className='min-h-96 flex flex-col justify-between'>
+            <div>
+              <h1 className='text-3xl font-bold mb-4'>{title}</h1>
+              <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>
+            </div>
             <p className='text-gray-600 my-5'>Author: {author}</p>
           </div>
         ) : (
@@ -81,7 +83,7 @@ const EditPost = () => {
             onChange={(e) => setContent(e.target.value)}
             placeholder='Content'
             required
-            className='w-full p-2 mb-4 border rounded'
+            className='w-full p-2 mb-4 border rounded resize-none min-h-96 outline-none'
           />
         )}
 
