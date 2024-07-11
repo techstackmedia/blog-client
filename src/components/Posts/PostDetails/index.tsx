@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePosts } from '../../../context/Post';
 import { useAuth } from '../../../context/Auth';
+import { useUser } from '../../../context/User';
 
 type Post = {
   _id: string;
@@ -16,6 +17,7 @@ const PostDetails = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [post, setPost] = useState<Post | null>(null);
+  const { user } = useUser();
 
   useEffect(() => {
     const foundPost = posts.find((p) => p._id === id);
@@ -44,7 +46,7 @@ const PostDetails = () => {
       <h1 className='text-3xl font-bold mb-4'>{post.title}</h1>
       <p>{post.content}</p>
       <p className='text-gray-600'>Author: {post.author}</p>
-      {isAuthenticated && (
+      {isAuthenticated && user?.name === post.author &&(
         <div className='flex justify-end'>
           <button
             onClick={handleEdit}

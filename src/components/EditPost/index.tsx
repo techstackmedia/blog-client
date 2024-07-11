@@ -10,7 +10,6 @@ const EditPost = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { user } = useUser();
-  console.log(user);
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -18,12 +17,12 @@ const EditPost = () => {
 
   useEffect(() => {
     const post = posts.find((p) => p._id === id);
-    if (post) {
+    if (post && post?.author === user?.name) {
       setTitle(post.title);
       setContent(post.content);
       setAuthor(post.author);
     }
-  }, [posts, id]);
+  }, [posts, id, user?.name]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
