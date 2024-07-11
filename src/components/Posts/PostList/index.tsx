@@ -2,6 +2,9 @@ import { usePosts } from '../../../context/Post';
 import { useAuth } from '../../../context/Auth';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../../context/User';
+import remarkGfm from 'remark-gfm';
+import Markdown from 'react-markdown';
+import truncateContent from '../../../utils/truncate';
 
 const PostList = () => {
   const { posts, deletePost } = usePosts();
@@ -29,7 +32,11 @@ const PostList = () => {
           className='mb-4 p-4 shadow-md rounded-md bg-white border'
         >
           <h2 className='text-xl font-bold mb-2'>{post.title}</h2>
-          <p className='mb-2'>{post.content}</p>
+          <p className='mb-2'>
+            <Markdown remarkPlugins={[remarkGfm]}>
+              {truncateContent(post.content, 25)}
+            </Markdown>
+          </p>
           <p className='text-gray-600'>Author: {post.author}</p>
           <button
             onClick={() => handlePost(post._id)}
