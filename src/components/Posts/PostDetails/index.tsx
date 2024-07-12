@@ -3,8 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { usePosts } from '../../../context/Post';
 import { useAuth } from '../../../context/Auth';
 import { useUser } from '../../../context/User';
-import Markdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 type Post = {
   _id: string;
@@ -15,7 +15,7 @@ type Post = {
 
 const PostDetails = () => {
   const { id } = useParams<{ id: string }>();
-  const { posts, deletePost } = usePosts();
+  const { posts, deletePost, isDeleting } = usePosts();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [post, setPost] = useState<Post | null>(null);
@@ -46,9 +46,9 @@ const PostDetails = () => {
   return (
     <div className='container mx-auto p-4'>
       <h1 className='text-3xl font-bold mb-4'>{post.title}</h1>
-      <p><Markdown remarkPlugins={[remarkGfm]}>{post.content}</Markdown></p>
+      <Markdown remarkPlugins={[remarkGfm]}>{post.content}</Markdown>
       <p className='text-gray-600'>Author: {post.author}</p>
-      {isAuthenticated && user?.name === post.author &&(
+      {isAuthenticated && user?.name === post.author && (
         <div className='flex justify-end'>
           <button
             onClick={handleEdit}
@@ -60,7 +60,7 @@ const PostDetails = () => {
             onClick={handleDelete}
             className='p-2 bg-red-500 text-white rounded'
           >
-            Delete
+            {isDeleting ? 'Loading...' : 'Delete'}
           </button>
         </div>
       )}

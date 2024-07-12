@@ -9,7 +9,7 @@ const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [isPreview, setIsPreview] = useState(false);
-  const { createPost } = usePosts();
+  const { createPost, isPosting } = usePosts();
   const navigate = useNavigate();
   const { user } = useUser();
   const name = user?.name;
@@ -77,7 +77,7 @@ const CreatePost = () => {
             type='submit'
             className='w-full p-2 bg-blue-500 text-white rounded'
           >
-            Create Post
+            {isPosting ? 'Loading...' : 'Create Post'}
           </button>
           <button
             type='button'

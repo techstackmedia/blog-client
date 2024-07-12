@@ -10,6 +10,10 @@ interface Post {
 
 interface PostContextProps {
   posts: Post[];
+  isLoading: boolean;
+  isPosting: boolean;
+  isUpdating: boolean;
+  isDeleting: boolean;
   fetchPosts: () => void;
   createPost: (post: Post) => Promise<void>;
   updatePost: (id: string, post: Post) => Promise<void>;
@@ -20,25 +24,57 @@ const PostContext = createContext<PostContextProps>({} as PostContextProps);
 
 export const PostProvider = ({ children }: { children: ReactNode }) => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isPosting, setIsPosting] = useState<boolean>(false);
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
   const fetchPosts = async () => {
-    const response = await api.get('/api/posts');
-    setPosts(response.data);
+    setIsLoading(true);
+    try {
+      const response = await api.get('/api/posts');
+      setPosts(response.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const createPost = async (post: Post) => {
-    const response = await api.post('/api/posts', post);
-    setPosts([...posts, response.data]);
+    setIsPosting(true);
+    try {
+      const response = await api.post('/api/posts', post);
+      setPosts([...posts, response.data]);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsPosting(false);
+    }
   };
 
   const updatePost = async (id: string, updatedPost: Post) => {
-    const response = await api.put(`/api/posts/${id}`, updatedPost);
-    setPosts(posts.map((post) => (post._id === id ? response.data : post)));
+    setIsUpdating(true);
+    try {
+      const response = await api.put(`/api/posts/${id}`, updatedPost);
+      setPosts(posts.map((post) => (post._id === id ? response.data : post)));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
   const deletePost = async (id: string) => {
-    await api.delete(`/api/posts/${id}`);
-    setPosts(posts.filter((post) => post._id !== id));
+    setIsDeleting(true);
+    try {
+      await api.delete(`/api/posts/${id}`);
+      setPosts(posts.filter((post) => post._id !== id));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   useEffect(() => {
@@ -46,7 +82,7 @@ export const PostProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <PostContext.Provider value={{ posts, fetchPosts, createPost, updatePost, deletePost }}>
+    <PostContext.Provider value={{ posts, isLoading, isPosting, isUpdating, isDeleting, fetchPosts, createPost, updatePost, deletePost }}>
       {children}
     </PostContext.Provider>
   );

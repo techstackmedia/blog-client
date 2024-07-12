@@ -7,7 +7,7 @@ import Markdown from 'react-markdown';
 import truncateContent from '../../../utils/truncate';
 
 const PostList = () => {
-  const { posts, deletePost } = usePosts();
+  const { posts, deletePost, isLoading, isDeleting } = usePosts();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { user } = useUser();
@@ -24,6 +24,14 @@ const PostList = () => {
     navigate(`/posts/${id}`);
   };
 
+  if (isLoading) {
+    return (
+      <div className='flex justify-center items-center h-screen'>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className='container mx-auto p-4'>
       {posts.map((post) => (
@@ -32,11 +40,9 @@ const PostList = () => {
           className='mb-4 p-4 shadow-md rounded-md bg-white border'
         >
           <h2 className='text-xl font-bold mb-2'>{post.title}</h2>
-          <p className='mb-2'>
-            <Markdown remarkPlugins={[remarkGfm]}>
-              {truncateContent(post.content, 25)}
-            </Markdown>
-          </p>
+          <Markdown remarkPlugins={[remarkGfm]} className='mb-2'>
+            {truncateContent(post.content, 25)}
+          </Markdown>
           <p className='text-gray-600'>Author: {post.author}</p>
           <button
             onClick={() => handlePost(post._id)}
@@ -56,7 +62,7 @@ const PostList = () => {
                 onClick={() => handleDelete(post._id)}
                 className='p-2 bg-red-500 text-white rounded'
               >
-                Delete
+                {isDeleting ? 'Loading...' : 'Delete'}
               </button>
             </div>
           )}

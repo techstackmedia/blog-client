@@ -8,7 +8,7 @@ import remarkGfm from 'remark-gfm';
 
 const EditPost = () => {
   const { id } = useParams<{ id: string }>();
-  const { posts, updatePost } = usePosts();
+  const { posts, updatePost, isUpdating } = usePosts();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { user } = useUser();
@@ -104,7 +104,7 @@ const EditPost = () => {
             type='submit'
             className='w-full p-2 bg-blue-500 text-white rounded'
           >
-            Update Post
+            {isUpdating ? 'Loading...' : 'Update Post'}
           </button>
           <button
             type='button'
